@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -42,7 +43,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         googleLogin=myLayout.findViewById(R.id.googleLogin);
         googleLogin.setSize(SignInButton.SIZE_STANDARD);
-
         googleLogin.setOnClickListener(this);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
@@ -106,6 +106,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                                .setIsSmartLockEnabled(false)
                                 .build(),
                         RC_SIGN_IN);
+        Intent intent= new Intent(getActivity(),FeedActivity.class);
+//        intent.putExtra("userId",fbUser.getUid());
+        startActivity(intent);
 
     }
     @Override
@@ -168,6 +171,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
+
     }
 
 
@@ -177,6 +181,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.googleLogin:
                 signIn();
+                Intent intent= new Intent(getActivity(),FeedActivity.class);
+//        intent.putExtra("userId",fbUser.getUid());
+                startActivity(intent);
                 break;
 //            case R.id.facebookLogin:
 //                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("public_profile"));

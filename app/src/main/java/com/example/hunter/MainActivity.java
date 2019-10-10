@@ -57,35 +57,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                startActivity(intent);
 //                break;
             case R.id.login:
-                User user = new User();
-                name = username.getText().toString();
-                if(password.getText().toString()!=""){
-                    pw=password.getText().toString();
-                }
-                else {
-                    pw=null;
-                }
-                user.setUsername(name);
-                user.setPassword(pw);
-                CollectionReference collectionReference=db.collection("users");
-                Query query=collectionReference.whereEqualTo("username",user.getUsername() );
-                db.collection("users")
-                        .whereEqualTo("username",user.getUsername())
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                                        Intent intent2 = new Intent(getApplicationContext(),ProfileActivity.class);
-//                                        startActivity(intent2);
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                Intent intent = new Intent(this, FeedActivity.class);
+                startActivity(intent);
+//                User user = new User();
+//                name = username.getText().toString();
+//                if(password.getText().toString()!=""){
+//                    pw=password.getText().toString();
+//                }
+//                else {
+//                    pw=null;
+//                }
+//                user.setUsername(name);
+//                user.setPassword(pw);
+//                CollectionReference collectionReference=db.collection("users");
+//                Query query=collectionReference.whereEqualTo("username",user.getUsername() );
+//                db.collection("users")
+//                        .whereEqualTo("username",user.getUsername())
+//                        .get()
+//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    for (QueryDocumentSnapshot document : task.getResult()) {
+////                                        Intent intent2 = new Intent(getApplicationContext(),ProfileActivity.class);
+////                                        startActivity(intent2);
+//                                        Log.d(TAG, document.getId() + " => " + document.getData());
+//                                    }
+//                                } else {
+//                                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                                }
+//                            }
+//                        });
 
             default:
                 break;
