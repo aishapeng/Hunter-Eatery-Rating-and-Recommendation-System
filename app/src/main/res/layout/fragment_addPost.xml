@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:scrollbarAlwaysDrawHorizontalTrack="false"
     android:scrollbarAlwaysDrawVerticalTrack="false"
-    tools:context=".FeedActivity">
+    tools:context=".FeedActivity"
+    >
 
     <Button
         android:id="@+id/post"
@@ -67,10 +68,6 @@
         android:numStars="6"
         android:scaleX="0.8"
         android:scaleY="0.8" />
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>

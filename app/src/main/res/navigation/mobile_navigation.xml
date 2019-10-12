@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_addPost">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_addPost"
-        android:name="com.example.hunter.ui.dashboard.DashboardFragment"
+        android:name="com.example.hunter.ui.addPost.AddPostFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_addPost" />
 
     <fragment
         android:id="@+id/navigation_notifications"
