@@ -12,23 +12,16 @@ import com.example.hunter.ui.addPost.AddPostFragment;
 import com.example.hunter.ui.home.HomeFragment;
 import com.example.hunter.ui.notifications.NotificationsFragment;
 import com.example.hunter.ui.profile.ProfileFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -74,6 +67,9 @@ public class FeedActivity extends AppCompatActivity{
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
 
+
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener=
@@ -104,6 +100,13 @@ public class FeedActivity extends AppCompatActivity{
                     return true;
                 }
             };
+
+    public void FeedFragment(){
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        HomeFragment mFrag = new HomeFragment();
+        t.replace(R.id.fragment_container, mFrag);
+        t.commit();
+    }
 
 
 }

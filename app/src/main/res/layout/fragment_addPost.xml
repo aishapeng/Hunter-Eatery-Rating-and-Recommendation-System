@@ -17,24 +17,34 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"/>
 
-    <EditText
-        android:id="@+id/location"
+<!--    <EditText-->
+<!--        android:id="@+id/location"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/post"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="@string/where"-->
+<!--        android:inputType="textPersonName" />-->
+
+
+    <fragment
+        android:id="@+id/autocomplete_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/post"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:hint="@string/where"
-        android:inputType="textPersonName" />
+        android:name=
+            "com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        />
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/location">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/autocomplete_fragment">
 
     </GridView>
 
@@ -42,13 +52,12 @@
         android:id="@+id/experience"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/gridView"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/gridView"
-        android:layout_centerVertical="true"
         android:ems="10"
         android:hint="@string/exp"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textImeMultiLine"
         android:lines="2" />
 
     <TextView
@@ -68,6 +77,13 @@
         android:numStars="6"
         android:scaleX="0.8"
         android:scaleY="0.8" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_below="@+id/ratingBar"/>
 
 
 </RelativeLayout>
