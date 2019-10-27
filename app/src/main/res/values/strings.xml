@@ -23,6 +23,7 @@
     <string name="rate">Rate your experience!</string>
     <string name="image_download_url">https://picsum.photos/200/300/?random</string>
     <string name="next">Next</string>
+    <string name="rewards">Rewards</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">392540071456526</string>

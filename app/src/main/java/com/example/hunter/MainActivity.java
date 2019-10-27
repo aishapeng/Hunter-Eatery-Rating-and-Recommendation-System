@@ -1,23 +1,15 @@
 package com.example.hunter;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,10 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.signup:
 //                Intent intent= new Intent(MainActivity.this,SignUpActivity.class);
 //                startActivity(intent);
-//                break;
+                break;
             case R.id.login:
-                Intent intent = new Intent(this, FeedActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, FeedActivity.class);
+//                startActivity(intent);
 //                User user = new User();
 //                name = username.getText().toString();
 //                if(password.getText().toString()!=""){

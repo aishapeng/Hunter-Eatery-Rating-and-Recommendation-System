@@ -132,7 +132,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             newUser.setUsername(username);
             newUser.setPhoto(photo);
             newUser.setUid(userId);
-            DocumentReference userDoc =db.collection("users").document("user");
+            DocumentReference userDoc =db.collection("users").document(user.getUid());
             userDoc.set(newUser).addOnCompleteListener(task -> {
                 Toast.makeText(getActivity(),"Login Successful",Toast.LENGTH_LONG).show();
                 Intent intent= new Intent(getActivity(),FeedActivity.class);

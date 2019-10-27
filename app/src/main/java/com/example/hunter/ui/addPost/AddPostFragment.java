@@ -70,16 +70,13 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 
 public class AddPostFragment extends Fragment implements View.OnClickListener {
     private FirebaseUser fbUser;
     private ArrayList<Uri> path;
     private ImageAdapter myImageAdapter;
     private GridView gridView;
-    private TextView textView;
-    private Button post;
+    private TextView post;
     private EditText experience;
     private RatingBar ratingBar;
     private String placeId;
@@ -116,15 +113,15 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
                     .setMaxCount(5)
                     .setMinCount(1)
                     .setPickerSpanCount(6)
-                    .setActionBarColor(R.color.colorPrimary)
+                    .setActionBarColor(R.color.colorPrimary,R.color.colorPrimary,true)
                     .setActionBarTitleColor(R.color.colorPrimaryDark)
 //                    .setArrayPaths(path)
                     .setAlbumSpanCount(2, 4)
                     .setButtonInAlbumActivity(false)
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
-                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_done_black_24dp))
-//                    .setOkButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_done_black_24dp))
+                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_backspace_black_24dp))
+                    .setDoneButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ic_done_black_24dp))
                     .setAllViewTitle("All")
                     .setActionBarTitle("Image Library")
                     .textOnImagesSelectionLimitReached("Limit Reached!")
@@ -149,7 +146,6 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
         gridView = root.findViewById(R.id.gridView);
         experience = root.findViewById(R.id.experience);
         ratingBar = root.findViewById(R.id.ratingBar);
-        textView=root.findViewById(R.id.textView);
         post.setOnClickListener(this::onClick);
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -188,9 +184,9 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
                     Log.i(TAG, String.format("Place '%s' has likelihood: %f",
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
-                    textView.setText(String.format("Place '%s' has likelihood: %f\n",
-                            placeLikelihood.getPlace().getName(),
-                            placeLikelihood.getLikelihood()));
+//                    textView.setText(String.format("Place '%s' has likelihood: %f\n",
+//                            placeLikelihood.getPlace().getName(),
+//                            placeLikelihood.getLikelihood()));
                 }
             })).addOnFailureListener((exception) -> {
                 if (exception instanceof ApiException) {
@@ -264,7 +260,7 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
                 Posts newPost = new Posts(
                         capt,currentTime,json,mAuth.getUid(),placeId,likes,comments,rating);
 
-                DocumentReference userDoc =db.collection("posts").document("post");
+                DocumentReference userDoc =db.collection("posts").document(mAuth.getUid()+placeId+currentTime.toString());
                 userDoc.set(newPost).addOnCompleteListener(task -> {
                     Toast.makeText(getActivity(),"Post Successful",Toast.LENGTH_LONG).show();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

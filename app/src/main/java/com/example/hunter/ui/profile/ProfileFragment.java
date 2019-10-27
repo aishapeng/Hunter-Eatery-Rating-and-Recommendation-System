@@ -27,6 +27,7 @@ import com.example.hunter.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,11 +43,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     String TAG;
     Button options;
     MenuItem signOut;
-
-
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    String userId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,25 +56,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         options=myLayout.findViewById(R.id.options);
         signOut=myLayout.findViewById(R.id.signOut);
 
-        db.collection("users")
+        userId= mAuth.getCurrentUser().getUid();
+
+        db.collection("users").document(userId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                username.setText(document.toObject(User.class).getUsername());
-                                String photoString = document.toObject(User.class).getPhoto();
-                                profilePic.setImageURI(null);
-                                if(photoString!=null){
-                                    Uri uri=Uri.parse(photoString);
-                                    Glide.with(getContext()).load(uri).into(profilePic);
-                                }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            username.setText(document.toObject(User.class).getUsername());
+                            String photoString = document.toObject(User.class).getPhoto();
+                            profilePic.setImageURI(null);
+                            if(photoString!=null){
+                                Uri uri=Uri.parse(photoString);
+                                Glide.with(getContext()).load(uri).into(profilePic);
                             }
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d(TAG, "No such document");
                         }
+                    } else {
+                        Log.w(TAG, "Error getting documents.", task.getException());
                     }
                 });
 
@@ -90,24 +91,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(getContext(), v);
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.signOut:
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent=new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
-                        return true;
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.signOut:
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent=new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    return true;
 
-                    default:
-                        return false;
-                }
+                default:
+                    return false;
             }
         });
         popup.inflate(R.menu.profile);
