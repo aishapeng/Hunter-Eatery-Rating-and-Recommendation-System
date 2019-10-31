@@ -85,10 +85,7 @@ public class RewardsFragment extends Fragment {
 
         adapter.setOnItemClickListener(position -> {
             RewardsItem currentItem=rewardsItemArrayList.get(position);
-//            Bundle args = new Bundle();
-//            args.putParcelable("rewardsItem",currentItem);
             RewardsDetailsFragment rewardsDetailsFragment=RewardsDetailsFragment.newInstance(currentItem);
-//            rewardsDetailsFragment.setArguments(args);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,rewardsDetailsFragment).commit();
         });
 

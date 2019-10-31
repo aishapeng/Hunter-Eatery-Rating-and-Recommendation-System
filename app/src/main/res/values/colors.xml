@@ -3,4 +3,6 @@
     <color name="colorPrimary">#A45A62</color>
     <color name="colorPrimaryDark">#E2D7B8</color>
     <color name="colorAccent">#EBE9E6</color>
+    <color name="fishMain">#596da4</color>
+    <color name="fishSec">#FFFFFF</color>
 </resources>

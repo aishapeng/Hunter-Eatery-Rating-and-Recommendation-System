@@ -1,80 +1,48 @@
 package com.example.hunter;
 
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
-import com.squareup.picasso.Picasso;
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-    private ArrayList<Image> mDataset;
-    private FeedActivity mActivity;
+import java.util.List;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        ImageView mImageView;
-        Button mLikeButton;
+public class ImageAdapter extends PagerAdapter {
+    private Context context;
+    private List<Uri> imageUri;
 
-        public ViewHolder(View v) {
-            super(v);
-            mTextView = v.findViewById(R.id.textView2);
-            mImageView = v.findViewById(R.id.imageView);
-            mLikeButton = v.findViewById(R.id.likeButton);
-        }
+    public ImageAdapter(Context context, List<Uri> imageUri) {
+        this.context = context;
+        this.imageUri = imageUri;
     }
 
-    public ImageAdapter(ArrayList<Image> myDataset, FeedActivity activity) {
-        mDataset = myDataset;
-        mActivity = activity;
-    }
-    // Create new views (invoked by the layout manager)
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.image_view, parent, false);
-
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public int getCount() {
+        return imageUri.size();
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Image image = (Image) mDataset.get(position);
-        if (image.user != null) {
-            holder.mTextView.setText(image.user.displayName);
-        }
-        Picasso.get().load(image.downloadUrl).into(holder.mImageView);
-
-        holder.mLikeButton.setText("Like (" + image.likes + ")");
-        if(image.hasLiked) {
-            holder.mLikeButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorAccent));
-        } else {
-            holder.mLikeButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorPrimary));
-        }
-        holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                mActivity.setLiked(image);
-            }
-        });
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view == object;
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    @NonNull
     @Override
-    public int getItemCount() {
-        return mDataset.size();
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        ImageView imageView = new ImageView(context);
+        Glide.with(context).load(imageUri.get(position)).into(imageView);
+        container.addView(imageView, 0);
+        return imageView;
     }
 
-    public void addImage(Image image) {
-        mDataset.add(0, image);
-        notifyDataSetChanged();
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((ImageView)object);
     }
 }

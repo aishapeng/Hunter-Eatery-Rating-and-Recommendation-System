@@ -24,6 +24,30 @@
     <string name="image_download_url">https://picsum.photos/200/300/?random</string>
     <string name="next">Next</string>
     <string name="rewards">Rewards</string>
+    <string name="places">Places</string>
+
+    <string-array name="category">
+        <item>Asian</item>
+        <item>Bar</item>
+        <item>Chinese</item>
+        <item>Dessert</item>
+        <item>Fast Food</item>
+        <item>Fusion</item>
+        <item>German</item>
+        <item>Halal</item>
+        <item>Indian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Malaysian</item>
+        <item>Mexican</item>
+        <item>Middle Eastern</item>
+        <item>Pastry</item>
+        <item>Snack</item>
+        <item>Thai</item>
+        <item>Vietnamese</item>
+        <item>Western</item>
+    </string-array>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">392540071456526</string>

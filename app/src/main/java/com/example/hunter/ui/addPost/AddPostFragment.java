@@ -3,8 +3,8 @@ package com.example.hunter.ui.addPost;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,12 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
+
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,38 +27,35 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 
-import com.bumptech.glide.Glide;
+import com.example.hunter.Category;
 import com.example.hunter.Comment;
-import com.example.hunter.FeedActivity;
+import com.example.hunter.ImageAdapter;
 import com.example.hunter.Like;
+import com.example.hunter.LocationTrack;
+import com.example.hunter.MultiSelectionSpinner;
 import com.example.hunter.Posts;
 import com.example.hunter.R;
 
 import com.example.hunter.ui.home.HomeFragment;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-//import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
-import com.sangcomz.fishbun.FishBun;
-import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
-import com.sangcomz.fishbun.define.Define;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 
 
 import java.util.ArrayList;
@@ -72,97 +68,106 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
 
 public class AddPostFragment extends Fragment implements View.OnClickListener {
-    private FirebaseUser fbUser;
-    private ArrayList<Uri> path;
-    private ImageAdapter myImageAdapter;
-    private GridView gridView;
-    private TextView post;
+    private static final int REQUEST_CODE_CHOOSE = 1;
+
     private EditText experience;
     private RatingBar ratingBar;
     private String placeId;
-    String TAG = "1";
+    private String placeName;
     private boolean mLocationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    PlacesClient placesClient;
-    private String api="AIzaSyDz5BGny6Lsp7gW-uJznoLVZS4riEdfnF0";
+    private List<Uri> mSelected;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Context context;
+    private ViewPager viewPager;
+    private double longitude;
+    private double latitude;
+    private ArrayList<Category> category=new ArrayList<>();
+    private MultiSelectionSpinner multiSelectionSpinner;
+
 
 
 
     private static final int RC_PERMISSION_READ_EXTERNAL_STORAGE = 1;
-//    private static final int RC_IMAGE_GALLERY = 2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), "perm", Toast.LENGTH_LONG).show();
 
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_READ_EXTERNAL_STORAGE);
         } else {
             Toast.makeText(getActivity(), "here", Toast.LENGTH_LONG).show();
 
-            FishBun.with(AddPostFragment.this).setImageAdapter(new GlideAdapter()).startAlbum();
-            FishBun.with(AddPostFragment.this)
-                    .setImageAdapter(new GlideAdapter())
-                    .setIsUseDetailView(false)
-//                    .setPickerCount(5) //Deprecated
-                    .setMaxCount(5)
-                    .setMinCount(1)
-                    .setPickerSpanCount(6)
-                    .setActionBarColor(R.color.colorPrimary,R.color.colorPrimary,true)
-                    .setActionBarTitleColor(R.color.colorPrimaryDark)
-//                    .setArrayPaths(path)
-                    .setAlbumSpanCount(2, 4)
-                    .setButtonInAlbumActivity(false)
-                    .setCamera(true)
-                    .setReachLimitAutomaticClose(true)
-                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_backspace_black_24dp))
-                    .setDoneButtonDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ic_done_black_24dp))
-                    .setAllViewTitle("All")
-                    .setActionBarTitle("Image Library")
-                    .textOnImagesSelectionLimitReached("Limit Reached!")
-                    .textOnNothingSelected("Nothing Selected")
-                    .setSelectCircleStrokeColor(Color.BLACK)
-                    .isStartInAllView(false)
-                    .startAlbum();
+            Matisse.from(AddPostFragment.this)
+                    .choose(MimeType.ofAll())
+                    .countable(true)
+                    .maxSelectable(9)
+                    .theme(R.style.Matisse_Dracula)
+//                    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(new GlideEngine())
+                    .showPreview(true) // Default is `true`
+                    .forResult(REQUEST_CODE_CHOOSE);
         }
 
+        String[] catName = getResources().getStringArray(R.array.category);
 
-
-
-
-
+        for(int i=0;i<catName.length;i++){
+            category.add(new Category(catName[i],false));
+        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AddPostViewModel addPostViewModel = ViewModelProviders.of(this).get(AddPostViewModel.class);
         View root = inflater.inflate(R.layout.fragment_addpost, container, false);
-        post = root.findViewById(R.id.post);
-        gridView = root.findViewById(R.id.gridView);
+        TextView post = root.findViewById(R.id.post);
         experience = root.findViewById(R.id.experience);
         ratingBar = root.findViewById(R.id.ratingBar);
-        post.setOnClickListener(this::onClick);
+        post.setOnClickListener(this);
+        context=root.getContext();
+        viewPager=root.findViewById(R.id.viewPager);
+        LocationTrack locationTrack = new LocationTrack(context);
+        multiSelectionSpinner=root.findViewById(R.id.spinner);
+
+        multiSelectionSpinner.setItems(category);
+
+        if (locationTrack.canGetLocation()) {
+            longitude = locationTrack.getLongitude();
+            latitude = locationTrack.getLatitude();
+
+            Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+        } else {
+            locationTrack.showSettingsAlert();
+        }
+
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         if (!Places.isInitialized()) {
-            Places.initialize(getActivity(), api);
+            String api = "AIzaSyDz5BGny6Lsp7gW-uJznoLVZS4riEdfnF0";
+            Places.initialize(root.getContext(), api);
         }
 
-        placesClient = Places.createClient(getContext());
+        PlacesClient placesClient = Places.createClient(root.getContext());
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setLocationBias(RectangularBounds.newInstance(
+                new LatLng(latitude, longitude),
+                new LatLng(latitude, longitude)));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 placeId= place.getId();
+                placeName=place.getName();
             }
 
             @Override
@@ -170,53 +175,19 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        // Use fields to define the data types to return.
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME);
 
-        // Use the builder to create a FindCurrentPlaceRequest.
-        FindCurrentPlaceRequest request =
-                FindCurrentPlaceRequest.builder(placeFields).build();
+        if (ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
-        if (ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
-                for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-                    Log.i(TAG, String.format("Place '%s' has likelihood: %f",
-                            placeLikelihood.getPlace().getName(),
-                            placeLikelihood.getLikelihood()));
-//                    textView.setText(String.format("Place '%s' has likelihood: %f\n",
-//                            placeLikelihood.getPlace().getName(),
-//                            placeLikelihood.getLikelihood()));
-                }
-            })).addOnFailureListener((exception) -> {
-                if (exception instanceof ApiException) {
-                    ApiException apiException = (ApiException) exception;
-                    Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-                }
-            });
         } else {
-            // A local method to request required permissions;
-            // See https://developer.android.com/training/permissions/requesting
-            getLocationPermission();
-        }
+
+            getLocationPermission(); }
 
 
-
-        addPostViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-            }
-        });
         return root;
     }
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(getContext(),
+
+        if (ContextCompat.checkSelfPermission(context,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
@@ -255,7 +226,8 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
                 String capt = experience.getText().toString();
                 float rating = (ratingBar.getRating());
                 Gson gson = new Gson();
-                String json = gson.toJson(path);
+                String json = gson.toJson(mSelected);
+                ArrayList<Category> selectedItem = multiSelectionSpinner.getSelectedItems();
 
                 Posts newPost = new Posts(
                         capt,currentTime,json,mAuth.getUid(),placeId,likes,comments,rating);
@@ -268,6 +240,7 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
                     transaction.addToBackStack(null);
                     transaction.commit();
                 });
+                break;
         }
     }
 
@@ -275,60 +248,15 @@ public class AddPostFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent imageData) {
         super.onActivityResult(requestCode, resultCode, imageData);
-        switch (requestCode) {
-            case Define.ALBUM_REQUEST_CODE:
-                if (resultCode == RESULT_OK) {
-
-                    path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
-                    // you can get an image path(ArrayList<Uri>) on 0.6.2 and later
-                    break;
-                }
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            mSelected = Matisse.obtainResult(imageData);
+            Log.d("Matisse", "mSelected: " + mSelected);
         }
-        myImageAdapter = new ImageAdapter(getActivity(), path);
-        gridView.setNumColumns(5);
-
-        if(myImageAdapter.imageUrls!=null) {
-            gridView.setAdapter(myImageAdapter);
+        if(!mSelected.isEmpty()) {
+            ImageAdapter imageAdapter = new ImageAdapter(context, mSelected);
+            viewPager.setAdapter(imageAdapter);
+            imageAdapter.notifyDataSetChanged();
         }
-
     }
-
-    public class ImageAdapter extends ArrayAdapter {
-        private Context context;
-        private LayoutInflater inflater;
-        //        ImageView imageView;
-        private ArrayList<Uri> imageUrls;
-
-        public ImageAdapter(Context context, ArrayList<Uri> imageUrls) {
-            super(context, R.layout.image, imageUrls);
-
-            this.context = context;
-            this.imageUrls = imageUrls;
-
-            inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
-
-            if (convertView == null) {  // if it's not recycled, initialize some attributes
-                imageView = new ImageView(context);
-                imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(5, 0, 5, 0);
-            } else {
-                imageView = (ImageView) convertView;
-
-            }
-
-            Glide.with(getContext()).load(path.get(position)).into(imageView);
-
-            return imageView;
-        }
-
-
-    }
-
 }
 

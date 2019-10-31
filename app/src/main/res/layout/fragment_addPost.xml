@@ -16,37 +16,52 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/addPost"
-        android:textColor="@color/colorPrimary" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/post"
+        android:visibility="visible" />
 
     <fragment
         android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/post"
-        android:name=
-            "com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
+        android:layout_below="@+id/viewPager"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
 
-    <GridView
-        android:id="@+id/gridView"
+
+    <com.example.hunter.MultiSelectionSpinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/autocomplete_fragment">
-
-    </GridView>
+        android:layout_below="@id/autocomplete_fragment"
+        android:layout_marginBottom="20dp" />
 
     <EditText
         android:id="@+id/experience"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gridView"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_below="@+id/spinner"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="@string/exp"
         android:inputType="textPersonName|textImeMultiLine"
-        android:lines="2" />
+        android:lines="2"
+        android:minLines="2" />
+
 
     <TextView
         android:id="@+id/textView2"
@@ -54,7 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/experience"
         android:layout_centerHorizontal="true"
-        android:text="@string/rate" />
+        android:text="@string/rate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -65,13 +81,6 @@
         android:numStars="6"
         android:scaleX="0.8"
         android:scaleY="0.8" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_below="@+id/ratingBar"/>
 
 
 </RelativeLayout>

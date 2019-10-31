@@ -22,8 +22,6 @@ import java.util.ArrayList;
 
 public class FeedActivity extends AppCompatActivity{
 
-    ImageAdapter mAdapter;
-    ArrayList<Image> images = new ArrayList<Image>();
     BottomNavigationView navView;
 
     @Override
@@ -32,7 +30,6 @@ public class FeedActivity extends AppCompatActivity{
         setContentView(R.layout.activity_feed);
         navView = findViewById(R.id.nav_view);
 
-        mAdapter = new ImageAdapter(images, this);
         navView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();

@@ -17,12 +17,13 @@ import com.bumptech.glide.Glide;
 import com.example.hunter.Image;
 import com.example.hunter.R;
 import com.example.hunter.RewardsItem;
+import com.example.hunter.ui.search.PlacesFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class RewardsDetailsFragment extends Fragment {
+public class RewardsDetailsFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     RewardsItem rewardsItem;
@@ -81,22 +82,22 @@ public class RewardsDetailsFragment extends Fragment {
 
         return v;
     }
-//
-//    @Override
-////    public void onAttach(Context context) {
-////        super.onAttach(context);
-////        if (context instanceof OnFragmentInteractionListener) {
-////            mListener = (OnFragmentInteractionListener) context;
-////        } else {
-////            throw new RuntimeException(context.toString()
-////                    + " must implement OnFragmentInteractionListener");
-////        }
-////    }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.placeName:
+                PlacesFragment placesFragment=PlacesFragment.newInstance(rewardsItem.getPlaceID());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,placesFragment).commit();
+                break;
+
+        }
     }
 
     public interface OnFragmentInteractionListener {
