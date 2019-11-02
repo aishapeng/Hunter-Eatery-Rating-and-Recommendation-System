@@ -1,34 +1,45 @@
 package com.example.hunter;
 
+
 import android.net.Uri;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Posts {
-    private String caption;
+    private String caption, postId;
     private Date date_created;
-    private String photo_id;
+    private List<Uri> photo_id;
     private String user_id;
     private String place_id;
     private List<Like> likes;
     private List<Comment> comments;
-    private float rating;
+    private Double rating,priceLvl;
+
 
     public Posts(){
 
     }
 
-    public Posts(String caption, Date date_created, String photo_id, String user_id, String place_id, List<Like> likes, List<Comment> comments, float rating) {
+    public Posts(String postId,String caption, Date date_created, String user_id, String place_id, List<Like> likes, List<Comment> comments, Double rating,Double priceLvl) {
+        this.postId=postId;
         this.caption = caption;
         this.date_created = date_created;
-        this.photo_id = photo_id;
+//        this.photo_id = photo_id;
         this.user_id = user_id;
         this.place_id = place_id;
         this.likes = likes;
         this.comments = comments;
         this.rating=rating;
+        this.priceLvl=priceLvl;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getCaption() {
@@ -47,11 +58,11 @@ public class Posts {
         this.date_created = date_created;
     }
 
-    public String getPhoto_id() {
+    public List<Uri> getPhoto_id() {
         return photo_id;
     }
 
-    public void setPhoto_id(String photo_id) {
+    public void setPhoto_id(List<Uri> photo_id) {
         this.photo_id = photo_id;
     }
 
@@ -87,11 +98,19 @@ public class Posts {
         this.comments = comments;
     }
 
-    public float getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public Double getPriceLvl() {
+        return priceLvl;
+    }
+
+    public void setPriceLvl(Double priceLvl) {
+        this.priceLvl = priceLvl;
     }
 }

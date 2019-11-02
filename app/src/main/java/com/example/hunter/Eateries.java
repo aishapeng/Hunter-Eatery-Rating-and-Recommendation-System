@@ -1,22 +1,39 @@
 package com.example.hunter;
 
+import com.google.android.libraries.places.api.model.OpeningHours;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Eateries {
 
-    public String address, category,icon, openingHours,phoneNum,phoneNum2,photo,placeID,placeName,price_level,rating,type;
+    private String address,phoneNum,phoneNum2,placeID,placeName;
+    private Double price_level, postNum, totalPrice;
+    private Double rating;
+    private List<PhotoMetadata> photo;
+    private List<String> category;
+    private OpeningHours openingHours;
+//    private List<Posts> posts;
+    private Double totalRate;
 
-    public Eateries(String address, String category, String icon, String openingHours, String phoneNum, String phoneNum2, String photo, String placeID, String placeName, String price_level, String rating, String type) {
+    public Eateries(){
+
+    }
+
+    public Eateries(String address, List<String> category, OpeningHours openingHours, String phoneNum, List<PhotoMetadata> photo, String placeID, String placeName, Double price_level, Double rating,Double totalPrice,Double totalRate) {
         this.address = address;
         this.category = category;
-        this.icon = icon;
         this.openingHours = openingHours;
         this.phoneNum = phoneNum;
-        this.phoneNum2 = phoneNum2;
         this.photo = photo;
         this.placeID = placeID;
         this.placeName = placeName;
         this.price_level = price_level;
         this.rating = rating;
-        this.type = type;
+//        this.posts = posts;
+        this.totalRate=totalRate;
+        this.totalPrice=totalPrice;
     }
 
     public String getAddress() {
@@ -27,27 +44,20 @@ public class Eateries {
         this.address = address;
     }
 
-    public String getCategory() {
+    public List<String> getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(List<String> category) {
         this.category = category;
     }
 
-    public String getIcon() {
-        return icon;
-    }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getOpeningHours() {
+    public OpeningHours getOpeningHours() {
         return openingHours;
     }
 
-    public void setOpeningHours(String openingHours) {
+    public void setOpeningHours(OpeningHours openingHours) {
         this.openingHours = openingHours;
     }
 
@@ -67,11 +77,11 @@ public class Eateries {
         this.phoneNum2 = phoneNum2;
     }
 
-    public String getPhoto() {
+    public List<PhotoMetadata> getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(List<PhotoMetadata> photo) {
         this.photo = photo;
     }
 
@@ -91,27 +101,43 @@ public class Eateries {
         this.placeName = placeName;
     }
 
-    public String getPrice_level() {
+    public Double getPrice_level() {
         return price_level;
     }
 
-    public void setPrice_level(String price_level) {
+    public void setPrice_level(Double price_level) {
         this.price_level = price_level;
     }
 
-    public String getRating() {
+    public Double getPostNum() {
+        return postNum;
+    }
+
+    public void setPostNum(Double postNum) {
+        this.postNum = postNum;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
-    public String getType() {
-        return type;
+    public Double getTotalRate() {
+        return totalRate;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTotalRate(Double totalRate) {
+        this.totalRate = totalRate;
     }
 }

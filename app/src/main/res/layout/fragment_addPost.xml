@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,7 +25,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="175dp"
         android:layout_below="@id/post"
         android:visibility="visible" />
 
@@ -36,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewPager"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
 
     <com.example.hunter.MultiSelectionSpinner
@@ -45,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/autocomplete_fragment"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="10dp"
+        android:theme="@style/AppTheme" />
 
     <EditText
         android:id="@+id/experience"
@@ -53,10 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
+        android:foregroundTint="@color/colorPrimary"
         android:hint="@string/exp"
         android:inputType="textPersonName|textImeMultiLine"
         android:lines="2"
@@ -69,18 +69,34 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/experience"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:text="@string/rate"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/priceBar"
+        style="@style/MyRatingBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/textView2"
         android:layout_centerHorizontal="true"
+        android:numStars="4"
+        android:progressDrawable="@drawable/ratingbar"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:stepSize="1" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/MyRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/priceBar"
+        android:layout_centerHorizontal="true"
         android:numStars="6"
-        android:scaleX="0.8"
-        android:scaleY="0.8" />
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:theme="@style/MyRatingBar" />
 
 
 </RelativeLayout>

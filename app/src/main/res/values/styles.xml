@@ -8,4 +8,19 @@
 <!--        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
 
+    <style name="MyRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+    </style>
+
+    <style name="customRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+
+    </style>
+
+
+
 </resources>

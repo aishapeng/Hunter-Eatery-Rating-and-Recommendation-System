@@ -40,7 +40,6 @@ public class FeedActivity extends AppCompatActivity{
                 Fragment selectedFragment = null;
                 switch (menuItem.getItemId()){
                     case R.id.post:
-                        Toast.makeText(getApplicationContext(),"btm success",Toast.LENGTH_LONG).show();
                         selectedFragment=new AddPostFragment();
                         break;
                     case R.id.newsFeed:
