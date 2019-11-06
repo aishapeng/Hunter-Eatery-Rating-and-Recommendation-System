@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+    </style>
+
+    <style name="MyRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+    </style>
+
+    <style name="customRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar2</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar2</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+
+    </style>
+
+    <style name="MyRatingBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+    </style>
+
+    <style name="customRatingBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:progressDrawable">@drawable/ratingbar</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:colorControlNormal">@color/fishMain</item>
+
+    </style>
+
+
+
+</resources>
